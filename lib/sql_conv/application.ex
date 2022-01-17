@@ -7,8 +7,7 @@ defmodule SqlConv.Application do
 
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: SqlConv.Worker.start_link(arg)
-      # {SqlConv.Worker, arg}
+      SqlConv.Repo
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
