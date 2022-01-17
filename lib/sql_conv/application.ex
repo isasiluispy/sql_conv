@@ -5,9 +5,31 @@ defmodule SqlConv.Application do
 
   use Application
 
+  defp poolboy_worker_config() do
+    [
+      name: {:local, :worker},
+      worker_module: SqlConv.Worker,
+      size: 5,
+      max_overflow: 2
+    ]
+  end
+
+  defp poolboy_db_worker_config() do
+    [
+      name: {:local, :db_worker},
+      worker_module: SqlConv.DbWorker,
+      size: 5,
+      max_overflow: 2
+    ]
+  end
+
   def start(_type, _args) do
     children = [
-      SqlConv.Repo
+      SqlConv.Repo,
+      SqlConv.Observer,
+      SqlConv.MainServer,
+      :poolboy.child_spec(:worker, poolboy_worker_config()),
+      :poolboy.child_spec(:db_worker, poolboy_db_worker_config()),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

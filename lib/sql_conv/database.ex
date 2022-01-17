@@ -48,7 +48,7 @@ defmodule SqlConv.Database do
   # Helpers
 
   defp execute_query(query) do
-    Hqcsv2sql.Repo |> Ecto.Adapters.SQL.query!(query, [])
+    SqlConv.Repo |> Ecto.Adapters.SQL.query!(query, [])
   end
 
   defp log_table_created(drop_query) do

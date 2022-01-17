@@ -7,15 +7,20 @@ defmodule SqlConv.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      escript: escript()
     ]
+  end
+
+  def escript do
+    [main_module: SqlConv]
   end
 
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
       extra_applications: [:logger],
-      mod: {SqlConv.Application, []}
+      # mod: {SqlConv.Application, []}
     ]
   end
 

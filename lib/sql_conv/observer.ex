@@ -4,7 +4,7 @@ defmodule SqlConv.Observer do
   alias NimbleCSV.RFC4180, as: CSV
 
   @status_list [:pending, :infer_schema, :insert_schema, :insert_data, :finish]
-  # @stage_list [:loading_files, :waiting, :working, :validation, :finish, :error]
+  @stage_list [:loading_files, :waiting, :working, :validation, :finish, :error]
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, :no_args, name: __MODULE__)
@@ -18,6 +18,18 @@ defmodule SqlConv.Observer do
     GenServer.call(__MODULE__, {:set_schema, file, schema}, :infinity)
   end
 
+  def get_files() do
+    GenServer.call(__MODULE__, :get_files, :infinity)
+  end
+
+  def get_stage do
+    GenServer.call(__MODULE__, :get_stage, :infinity)
+  end
+
+  def change_stage(new_stage) do
+    GenServer.cast(__MODULE__, {:change_stage, new_stage})
+  end
+
   def init(_) do
     {:ok,
      %{
@@ -25,8 +37,7 @@ defmodule SqlConv.Observer do
        file_list: %{},
        files_to_process: [],
        stage: :loading_files,
-       validation_status: nil,
-       active_worker_count: Application.get_env(:hqcsv2sql, Hqcsv2sql.Server)[:worker_count]
+       validation_status: nil
      }, {:continue, :load_files}}
   end
 
@@ -40,6 +51,22 @@ defmodule SqlConv.Observer do
      )}
   end
 
+  def handle_call(:get_stage, _from, %{stage: stage} = state) do
+    {:reply, stage, state}
+  end
+
+  def handle_call(:get_files, _from, %{file_list: files_map, files_to_process: files_to_process} = state) do
+
+    my_map =
+      files_to_process
+      |> Enum.map(fn file ->
+        %{row_count: row_count} = files_map[file]
+        {file, row_count}
+      end)
+
+    {:reply, my_map, state}
+  end
+
   def handle_call({:set_schema, file, schema}, _from, %{file_list: file_list} = state) do
     {_, file_list} =
       Map.get_and_update(file_list, file, fn file_struct ->
@@ -47,6 +74,10 @@ defmodule SqlConv.Observer do
       end)
 
     {:reply, nil, Map.put(state, :file_list, file_list)}
+  end
+
+  def handle_cast({:change_stage, new_stage}, state) when new_stage in @stage_list do
+    {:noreply, Map.put(state, :stage, new_stage)}
   end
 
   def handle_cast(
@@ -85,7 +116,9 @@ defmodule SqlConv.Observer do
   end
 
   defp get_file_list() do
-    source_dir = Application.get_env(:hqcsv2sql, Hqcsv2sql.Server)[:source_csv_directory]
+    source_dir = Application.get_env(:sql_conv, SqlConv.MainServer)[:source_csv_directory]
+
+    IO.inspect(source_dir, label: "source dir")
 
     source_dir
     |> File.ls!()
