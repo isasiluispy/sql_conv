@@ -118,8 +118,6 @@ defmodule SqlConv.Observer do
   defp get_file_list() do
     source_dir = Application.get_env(:sql_conv, SqlConv.MainServer)[:source_csv_directory]
 
-    IO.inspect(source_dir, label: "source dir")
-
     source_dir
     |> File.ls!()
     |> Enum.reject(fn file ->
