@@ -37,7 +37,7 @@ defmodule SqlConv do
 
       :finish ->
         # Finish and stop supervisors after a second
-        IO.puts("finishing supervisor")
+        IO.puts("Finishing Supervisor")
         :timer.sleep(1000)
         Supervisor.stop(sup_pid)
 
