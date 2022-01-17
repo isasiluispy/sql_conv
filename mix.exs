@@ -23,7 +23,11 @@ defmodule SqlConv.MixProject do
   defp deps do
     [
       {:ecto_sql, "~> 3.0"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:nimble_csv, "~> 0.7.0"},
+      {:cli_spinners, "~> 0.1.0"},
+      {:sizeable, "~> 1.0"},
+      {:poolboy, "~> 1.5.1"}
     ]
   end
 end
