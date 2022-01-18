@@ -9,7 +9,7 @@ defmodule SqlConv.Application do
     [
       name: {:local, :worker},
       worker_module: SqlConv.Worker,
-      size: 5,
+      size: 50,
       max_overflow: 2
     ]
   end
@@ -18,7 +18,7 @@ defmodule SqlConv.Application do
     [
       name: {:local, :db_worker},
       worker_module: SqlConv.DbWorker,
-      size: 5,
+      size: 50,
       max_overflow: 2
     ]
   end
