@@ -13,6 +13,7 @@ SqlConv takes advantage of multi core processors doing most of its tasks in para
 doing the same tasks in a single threaded application.
 
 ## Instalation and usage
+The version of the tools presented here are the ones I used and worked.
 
 - Install [asdf](https://github.com/asdf-vm/asdf)
 - Install erlang -> asdf install erlang 24.2 
