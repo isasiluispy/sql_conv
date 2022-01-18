@@ -11,3 +11,16 @@ In a nutshell, the system will do the next steps in order:
 
 SqlConv takes advantage of multi core processors doing most of its tasks in parallel, meaning it takes significantlly less time than
 doing the same tasks in a single threaded application.
+
+## Instalation and usage
+
+- Install [asdf](https://github.com/asdf-vm/asdf)
+- Install erlang -> asdf install erlang 24.2 
+- Install elixir -> asdf install elixir 1.13.2-otp-24
+- In the root directory run:
+  - mix deps.get
+  - mix escript.build
+  - mix ecto.create
+  - ./sql_conv --db-connection-string "postgres:@localhost/sql_conv_repo"
+
+And you should be able to have a fresh database with all CSVs as postgres tables.
