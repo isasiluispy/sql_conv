@@ -12,7 +12,7 @@ In a nutshell, the system will do the next steps in order:
 SqlConv takes advantage of multi core processors doing most of its tasks in parallel, meaning it takes significantlly less time than
 doing the same tasks in a single threaded application.
 
-## Instalation and usage
+## Installation and usage
 The version of the tools presented here are the ones I used and worked.
 
 - Install [asdf](https://github.com/asdf-vm/asdf)
