@@ -5,7 +5,7 @@ It's a tool that will let you load light or huge CSV files into Postgres tables.
 In a nutshell, the system will do the next steps in order:
 
 - Read CSV files and get their table structure
-- Create the tables based on the strcuture
+- Create the tables based on the acquired structure
 - Insert all csv data into the correspondant table
 
 
